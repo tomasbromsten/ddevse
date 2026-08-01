@@ -522,6 +522,36 @@ function makeAnt() {
 }
 
 // ═══════════════════════════════════════════════════════
+//  INTERACTIVE IMPULSE — space bar gives the camera a light hop,
+//  which then eases back to normal after a short while.
+// ═══════════════════════════════════════════════════════
+const smoothstep2 = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+
+const impulses = {
+  hop: { start: null, attack: 0.08, hold: 0.04, release: 0.55 }, // space: pop upward
+};
+
+function trigger(name) { impulses[name].start = clock.getElapsedTime(); }
+
+function envelope(cfg, now) {
+  if (cfg.start === null) return 0;
+  const dt = now - cfg.start;
+  if (dt < 0) return 0;
+  if (dt < cfg.attack) return smoothstep2(dt / cfg.attack);
+  if (dt < cfg.attack + cfg.hold) return 1;
+  const relT = dt - cfg.attack - cfg.hold;
+  if (relT < cfg.release) return 1 - smoothstep2(relT / cfg.release);
+  cfg.start = null;
+  return 0;
+}
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === ' ') { e.preventDefault(); trigger('hop'); }
+});
+window.addEventListener('mousedown', () => trigger('hop'));
+window.addEventListener('touchstart', () => trigger('hop'), { passive: true });
+
+// ═══════════════════════════════════════════════════════
 //  CREATURE SYSTEM
 // ═══════════════════════════════════════════════════════
 const creatures = [];
@@ -626,16 +656,65 @@ function animate() {
   const tz = 14 + Math.cos(ct * 0.55) * 6.5 + Math.sin(ct * 0.22) * 5.0;
   const ty = 0.26 + Math.abs(Math.sin(t * 2.5)) * 0.09; // walking bob
 
-  cam.position.x += (tx - cam.position.x) * 0.010;
-  cam.position.y += (ty - cam.position.y) * 0.10;
-  cam.position.z += (tz - cam.position.z) * 0.010;
-
   // Gaze sweeps: mostly toward water, occasionally sideways
   const gt = t * 0.072;
-  const gx = cam.position.x + Math.sin(gt * 1.12) * 5.5;
-  const gz = cam.position.z - 5.5 + Math.sin(gt * 0.55) * 5;
+  const gx = tx + Math.sin(gt * 1.12) * 5.5;
+  const gz = tz - 5.5 + Math.sin(gt * 0.55) * 5;
   const gy2 = 0.6 + Math.sin(gt * 0.9) * 0.4;
-  cam.lookAt(gx, gy2, gz);
+
+  // ── Bird's-eye interlude: slow soft rise, then quick soft descent ──
+  const smoothstep = (x) => { x = Math.min(1, Math.max(0, x)); return x * x * (3 - 2 * x); };
+  const cycle = 58;      // total cycle length (s)
+  const riseStart = 34;  // when the ascent begins within the cycle
+  const riseTime = 11;   // slow climb
+  const holdTime = 4;    // linger up top
+  const fallTime = 3.5;  // quicker return
+  const cp = t % cycle;
+  const riseEnd = riseStart + riseTime;
+  const holdEnd = riseEnd + holdTime;
+  const fallEnd = holdEnd + fallTime;
+
+  let alt = 0;
+  if (cp < riseStart) {
+    alt = 0;
+  } else if (cp < riseEnd) {
+    alt = smoothstep((cp - riseStart) / riseTime);
+  } else if (cp < holdEnd) {
+    alt = 1;
+  } else if (cp < fallEnd) {
+    alt = 1 - smoothstep((cp - holdEnd) / fallTime);
+  } else {
+    alt = 0;
+  }
+
+  // Bird's-eye target: high above the scene's centre, looking down over everything
+  const birdX = tx * 0.3;
+  const birdY = 82;
+  const birdZ = tz * 0.3 - 10;
+  const birdLookX = 0, birdLookY = 0, birdLookZ = -25;
+
+  const targetX = tx + (birdX - tx) * alt;
+  const targetY = ty + (birdY - ty) * alt;
+  const targetZ = tz + (birdZ - tz) * alt;
+  const lookX = gx + (birdLookX - gx) * alt;
+  const lookY = gy2 + (birdLookY - gy2) * alt;
+  const lookZ = gz + (birdLookZ - gz) * alt;
+
+  // Follow the (already smoothly-eased) target; ease a touch faster while airborne
+  const posEase = 0.010 + alt * 0.02;
+  const yEase = alt > 0 || ty !== cam.position.y ? 0.045 + alt * 0.02 : 0.10;
+
+  cam.position.x += (targetX - cam.position.x) * posEase;
+  cam.position.y += (targetY - cam.position.y) * yEase;
+  cam.position.z += (targetZ - cam.position.z) * posEase;
+
+  // ── Apply interactive impulse on top of the base motion ──
+  const eHop = envelope(impulses.hop, t);
+
+  // Space: a light hop
+  cam.position.y += eHop * 1.35;
+
+  cam.lookAt(lookX, lookY, lookZ);
 
   renderer.render(scene, cam);
 }
