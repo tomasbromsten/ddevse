@@ -33,6 +33,7 @@ button:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
 .bevel{border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);background:var(--face);padding:.3rem}
 .px{image-rendering:pixelated;image-rendering:crisp-edges}
 a{color:var(--link)}
+[data-url]{cursor:pointer}[data-url]:focus-visible{outline:3px dashed #e00;outline-offset:2px}#tip{position:fixed;z-index:20;max-width:min(22rem,calc(100vw - 1rem));padding:.4rem .6rem;background:#ffffe1;color:#000;border:1px solid #000;box-shadow:3px 3px 0 rgba(0,0,0,.4);font-size:.85rem;line-height:1.3;pointer-events:none;display:none}
 .sway{animation:sway 3s ease-in-out infinite alternate}
 .bob{animation:bob 1.2s steps(2) infinite}
 @keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
@@ -69,46 +70,46 @@ a{color:var(--link)}
           <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b6ff5a"/><stop offset=".5" stop-color="#18d838"/><stop offset="1" stop-color="#067a1a"/></linearGradient></defs>
           <g transform="rotate(-3 200 50) skewX(-4)"><text x="14" y="76" textLength="372" lengthAdjust="spacingAndGlyphs" font-family="Impact,Haettenschweiler,'Arial Black',sans-serif" font-size="78" fill="url(#g)" stroke="#033d0c" stroke-width="3" paint-order="stroke">ddev.se</text></g>
         </svg>
-        <div class="ticker"><span>★ “Working code isn’t enough.” ★ “Modules should be deep.” ★ “Design it twice.” ★ “Define errors out of existence.” ★ “Comments are always failures.” ★ “Nature isn’t classical, dammit.” ★ “God does not play dice with the universe.” ★ “Spooky action at a distance.” ★</span></div>
+        <div class="ticker"><span>★ “Working code isn’t enough.” ★ “Modules should be deep.” ★ “Design it twice.” ★ “Define errors out of existence.” ★ “Comments should describe things that aren’t obvious from the code.” ★ “Nature isn’t classical, dammit.” ★ “God does not play dice with the universe.” ★ “Spooky action at a distance.” ★</span></div>
       </section>
 
-      <figure class="it a-photo" style="margin:0"><div class="bevel"><img id="sunset" class="px" alt="Dithered pixel-art sunset" width="160" height="120"></div><span class="cap">“Design it twice.”</span></figure>
+      <figure class="it a-photo" style="margin:0" data-url="https://en.wikipedia.org/wiki/A_Philosophy_of_Software_Design" data-tip="Sketching at least two radically different designs for a module before committing exposes trade-offs that a first idea hides."><div class="bevel"><img id="sunset" class="px" alt="Dithered pixel-art sunset" width="160" height="120"></div><span class="cap">“Design it twice.”</span></figure>
 
-      <div class="it a-badge">
+      <div class="it a-badge" data-url="https://en.wikipedia.org/wiki/Technical_debt" data-tip="Complexity rarely arrives as one big mistake. It builds up from many small shortcuts, each harmless on its own, so every one is worth resisting.">
         <svg viewBox="0 0 88 31" width="190" role="img" aria-label="Campaign against decoherence"><rect width="88" height="31" fill="#d4d0c8" stroke="#000"/><rect x="2" y="2" width="84" height="27" fill="#fff" stroke="#808080"/><text x="5" y="12" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#c00">CAMPAIGN AGAINST</text><text x="5" y="24" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#000">DECOHERENCE!</text><rect x="68" y="6" width="14" height="18" rx="2" fill="#222"/><rect x="70" y="9" width="10" height="11" fill="#6cf"/></svg>
         <span class="cap">“Complexity is incremental.”</span>
       </div>
 
-      <div class="it a-floppy sway">
+      <div class="it a-floppy sway" data-url="https://en.wikipedia.org/wiki/Information_hiding" data-tip="A deep module has a simple interface that hides a lot of functionality. Shallow modules, with big interfaces and little behaviour, add complexity instead of removing it.">
         <svg viewBox="0 0 100 100" width="130" role="img" aria-label="Floppy disk"><path d="M6 6h78l10 10v78H6z" fill="#2a4bd8" stroke="#10206a" stroke-width="3"/><rect x="24" y="6" width="50" height="30" fill="#c9ccd4" stroke="#555"/><rect x="58" y="10" width="10" height="21" fill="#333"/><rect x="16" y="50" width="68" height="44" fill="#f4f1e6" stroke="#aaa"/><path d="M22 62h56M22 72h56M22 82h40" stroke="#6a8ed8" stroke-width="2"/><text x="22" y="59" font-family="'Comic Sans MS',cursive" font-size="9" fill="#c00">QUBITS</text></svg>
         <span class="cap">“Modules should be deep.”</span>
       </div>
 
-      <div class="it a-inv bob"><img id="inv" class="px" alt="Pixel space invader" width="132"><span class="cap">“Define errors out of existence.”</span></div>
+      <div class="it a-inv bob" data-url="https://en.wikipedia.org/wiki/A_Philosophy_of_Software_Design" data-tip="Design interfaces so that error cases can’t occur, or are handled internally, instead of pushing exceptions onto every caller of the code."><img id="inv" class="px" alt="Pixel space invader" width="132"><span class="cap">“Define errors out of existence.”</span></div>
 
-      <div class="it a-robot">
+      <div class="it a-robot" data-url="https://en.wikipedia.org/wiki/Interpretations_of_quantum_mechanics" data-tip="The maths predicts experiments with great precision, but what it means physically is still debated, hence the many competing interpretations.">
         <svg viewBox="0 0 120 120" width="150" role="img" aria-label="Friendly robot"><line x1="60" y1="8" x2="60" y2="24" stroke="#444" stroke-width="3"/><circle cx="60" cy="8" r="6" fill="#f33"/><rect x="22" y="24" width="76" height="60" rx="14" fill="#b9c6d6" stroke="#2b3a52" stroke-width="3"/><circle cx="44" cy="50" r="10" fill="#fff" stroke="#2b3a52" stroke-width="2"/><circle cx="76" cy="50" r="10" fill="#fff" stroke="#2b3a52" stroke-width="2"/><circle cx="46" cy="51" r="4" fill="#06c"/><circle cx="78" cy="51" r="4" fill="#06c"/><path d="M42 70q18 12 36 0" fill="none" stroke="#2b3a52" stroke-width="4" stroke-linecap="round"/><rect x="34" y="86" width="52" height="26" rx="6" fill="#8aa0ba" stroke="#2b3a52" stroke-width="3"/><circle cx="60" cy="99" r="5" fill="#7f7"/></svg>
         <span class="cap">“Nobody understands quantum mechanics.”</span>
       </div>
 
-      <div class="it a-crt">
+      <div class="it a-crt" data-url="https://en.wikipedia.org/wiki/Comment_(computer_programming)" data-tip="Code shows what happens. Comments capture what it can’t show: why a decision was made and what an abstraction is meant to be.">
         <svg viewBox="0 0 140 130" width="190" role="img" aria-label="CRT computer"><path d="M18 8h84l12 8v78l-12 8H18z" fill="#cfcfcf" stroke="#444" stroke-width="3"/><rect x="26" y="16" width="70" height="62" rx="6" fill="#111"/><defs><linearGradient id="sc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb347"/><stop offset="1" stop-color="#ff5e62"/></linearGradient></defs><rect x="30" y="20" width="62" height="54" rx="5" fill="url(#sc)"/><path d="M34 24l24 0-24 16z" fill="rgba(255,255,255,.35)"/><circle cx="104" cy="90" r="3" fill="#2d2"/><rect x="40" y="102" width="36" height="8" fill="#aaa" stroke="#444"/><path d="M20 118l20-12h84l-14 18H20z" fill="#e6e6e6" stroke="#444" stroke-width="2"/><path d="M42 114h70M36 119h66" stroke="#888" stroke-dasharray="4 3"/></svg>
-        <span class="cap">“Comments are always failures.”</span>
+        <span class="cap">“Comments should describe things that aren’t obvious from the code.”</span>
       </div>
 
-      <div class="it a-hand">
+      <div class="it a-hand" data-url="https://en.wikipedia.org/wiki/Quantum_entanglement" data-tip="Measuring one particle of an entangled pair appears to instantly affect the other, however far apart they are. Experiments have confirmed the correlations are real.">
         <svg class="bob" viewBox="0 0 150 60" width="150" role="img" aria-label="Pointing hand"><path d="M4 22h88l10-3h38c8 0 10 8 2 10l-30 4H80l-14 4H4z" fill="#f2b98d" stroke="#6b3b1b" stroke-width="2.5" stroke-linejoin="round"/><path d="M92 19c10-4 22-6 40-5" fill="none" stroke="#6b3b1b" stroke-width="2"/><rect x="2" y="14" width="16" height="32" rx="3" fill="#2a4bd8" stroke="#10206a" stroke-width="2.5"/></svg>
-        <a href="#guestbook">“Spooky action at a distance.”</a>
+        <a href="https://en.wikipedia.org/wiki/Quantum_entanglement" target="_blank" rel="noopener">“Spooky action at a distance.”</a>
       </div>
 
-      <div class="it a-cat"><img id="cat" class="px" alt="Pixel cat" width="156"><span class="cap">“God does not play dice.”</span></div>
+      <div class="it a-cat" data-url="https://en.wikipedia.org/wiki/Bohr%E2%80%93Einstein_debates" data-tip="Hidden deterministic rules could lie behind quantum randomness. Bell-test experiments have ruled out local hidden-variable explanations."><img id="cat" class="px" alt="Pixel cat" width="156"><span class="cap">“God does not play dice.”</span></div>
 
-      <div class="it a-phone">
+      <div class="it a-phone" data-url="https://en.wikipedia.org/wiki/A_Philosophy_of_Software_Design" data-tip="Code that merely passes its tests isn’t good enough. A little investment in design now beats accumulating quick tactical hacks.">
         <svg viewBox="0 0 90 150" width="105" role="img" aria-label="Smartphone with notifications"><rect x="6" y="4" width="78" height="142" rx="14" fill="#16171d" stroke="#555" stroke-width="3"/><rect x="13" y="16" width="64" height="116" rx="6" fill="#1d2a4f"/><defs><linearGradient id="ph" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs><rect x="17" y="22" width="56" height="30" rx="5" fill="url(#ph)"/><rect x="17" y="58" width="56" height="12" rx="4" fill="#fff" opacity=".85"/><rect x="17" y="76" width="40" height="12" rx="4" fill="#fff" opacity=".6"/><rect x="17" y="94" width="48" height="12" rx="4" fill="#fff" opacity=".4"/><rect x="34" y="8" width="22" height="4" rx="2" fill="#000"/><circle cx="72" cy="14" r="11" fill="#e11d48"/><text x="72" y="19" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#fff">3</text></svg>
         <span class="cap">“Working code isn’t enough.”</span>
       </div>
 
-      <div class="it a-best"><div class="bevel" style="max-width:12rem"><b>Rule two:</b><br>“They should be smaller than that.”</div><img id="heart" class="px" alt="Pixel heart" width="54"></div>
+      <div class="it a-best" data-url="https://en.wikipedia.org/wiki/Robert_C._Martin" data-tip="Splitting only helps when it reduces what a reader must know. Many tiny pieces add interfaces, and interfaces add complexity."><div class="bevel" style="max-width:12rem"><b>“Better together or better apart?”</b></div><img id="heart" class="px" alt="Pixel heart" width="54"></div>
 
       <div class="it a-counter">
         <span>Visitor no.</span>
@@ -116,7 +117,7 @@ a{color:var(--link)}
         <span class="cap">since 1998</span>
       </div>
 
-      <nav class="it a-links"><ul class="links" aria-label="Webring"><li><b>~ More ~</b></li><li><a href="#">Deep modules</a></li><li><a href="#">Small functions</a></li><li><a href="#">Qubits</a></li><li><a href="#">Entanglement</a></li></ul></nav>
+      <nav class="it a-links"><ul class="links" aria-label="Webring"><li><b>~ More ~</b></li><li><a href="#">Deep modules</a></li><li><a href="#">Better together</a></li><li><a href="#">Qubits</a></li><li><a href="#">Entanglement</a></li></ul></nav>
     </main>
   </div>
   
@@ -149,6 +150,19 @@ a{color:var(--link)}
   // counter
   try{var n=+(localStorage.getItem('pp_n')||4216)+1;localStorage.setItem('pp_n',n);document.getElementById('count').textContent=('000000'+n).slice(-6)}catch(e){}
   // theme
+  var tip=document.createElement('div');tip.id='tip';tip.setAttribute('role','tooltip');document.body.appendChild(tip);
+  function place(x,y){var w=tip.offsetWidth,h=tip.offsetHeight,px=Math.min(Math.max(8,x+14),innerWidth-w-8),py=y+18+h>innerHeight-8?y-h-14:y+18;tip.style.left=px+'px';tip.style.top=Math.max(8,py)+'px'}
+  function go(u){window.open(u,'_blank','noopener')}
+  document.querySelectorAll('[data-url]').forEach(function(el){
+    el.tabIndex=0;el.setAttribute('role','link');
+    el.addEventListener('mouseenter',function(e){tip.textContent=el.dataset.tip;tip.style.display='block';place(e.clientX,e.clientY)});
+    el.addEventListener('mousemove',function(e){place(e.clientX,e.clientY)});
+    el.addEventListener('mouseleave',function(){tip.style.display='none'});
+    el.addEventListener('focus',function(){var q=el.getBoundingClientRect();tip.textContent=el.dataset.tip;tip.style.display='block';place(q.left,q.bottom-18)});
+    el.addEventListener('blur',function(){tip.style.display='none'});
+    el.addEventListener('click',function(e){if(!e.target.closest('a'))go(el.dataset.url)});
+    el.addEventListener('keydown',function(e){if(e.key==='Enter'&&e.target===el)go(el.dataset.url)});
+  });
   var r=document.documentElement,b=document.getElementById('theme');
   b.addEventListener('click',function(){var dark=getComputedStyle(r).getPropertyValue('--desk').trim()==='#10222a';r.setAttribute('data-theme',dark?'light':'dark')});
 })();
