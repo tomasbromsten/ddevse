@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ddev.se – Quantum Programming</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--desk:#008080;--face:#c0c0c0;--hi:#fff;--lo:#808080;--ink:#000;--page:#cfe3cf;--title1:#000080;--title2:#1084d0;--link:#0000ee}
+:root[data-theme="dark"]{--desk:#10222a;--face:#3a3a44;--hi:#6a6a78;--lo:#14141a;--ink:#f2f2f2;--page:#1b2b24;--title1:#3b0764;--title2:#7c3aed;--link:#8ab4ff}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--desk:#10222a;--face:#3a3a44;--hi:#6a6a78;--lo:#14141a;--ink:#f2f2f2;--page:#1b2b24;--title1:#3b0764;--title2:#7c3aed;--link:#8ab4ff}}
+html{scroll-padding-top:env(safe-area-inset-top,0px);font-size:clamp(13px,.5vw + 10px,26px)}
+*,*:before,*:after{box-sizing:border-box}
+body{margin:0;background:var(--desk);color:var(--ink);font:1rem/1.35 "MS Sans Serif",Tahoma,Verdana,Geneva,sans-serif;min-height:100vh;padding:0}
+.win{margin:0}.themebtn{position:fixed;top:calc(env(safe-area-inset-top,0px) + .6rem);right:.6rem;z-index:5}
+.title{display:flex;align-items:center;gap:.5rem;background:linear-gradient(90deg,var(--title1),var(--title2));color:#fff;font-weight:bold;padding:.2rem .4rem}
+.title span{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.title b{display:inline-grid;place-items:center;width:1.3rem;height:1.2rem;background:var(--face);color:var(--ink);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);font-size:.75rem}
+.bar{display:flex;flex-wrap:wrap;gap:.2rem 1rem;padding:.25rem .5rem;border-bottom:1px solid var(--lo)}
+.bar.tools{gap:.3rem .8rem}
+.addr{display:flex;gap:.5rem;align-items:center;padding:.25rem .5rem}
+.addr div{flex:1;min-width:0;background:#fff;color:#000;border:2px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);padding:.1rem .4rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+button,.btn{font:inherit;color:var(--ink);background:var(--face);border:2px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);padding:.1rem .6rem;cursor:pointer}
+button:active{border-color:var(--lo) var(--hi) var(--hi) var(--lo)}
+.view{background:var(--page);position:relative;overflow:hidden;min-height:100vh}
+.zig{height:.9rem;background:linear-gradient(135deg,#e00 25%,transparent 25%) -.45rem 0,linear-gradient(225deg,#e00 25%,transparent 25%) -.45rem 0,#e00;background-size:.9rem .9rem;background-color:transparent}
+.page{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Crect width='120' height='120' fill='%23a9c4a5'/%3E%3Cg fill='none' stroke='%2373906f' stroke-width='3'%3E%3Cpath d='M0 20h40l10 10h30M60 0v40l15 15M120 80H90l-10 10v30M10 120V90l15-15h30'/%3E%3C/g%3E%3Cg fill='%23d9e8d4' stroke='%23567352'%3E%3Crect x='70' y='8' width='30' height='16'/%3E%3Crect x='8' y='96' width='24' height='12'/%3E%3C/g%3E%3Cg fill='%23567352'%3E%3Ccircle cx='40' cy='20' r='3'/%3E%3Ccircle cx='80' cy='30' r='3'/%3E%3Ccircle cx='55' cy='75' r='3'/%3E%3C/g%3E%3C/svg%3E");background-size:8rem;padding:1.2rem;display:grid;gap:1.2rem;grid-template-columns:repeat(2,minmax(0,1fr));align-items:center;justify-items:center}
+:root[data-theme="dark"] .page{background-blend-mode:multiply;background-color:#0a1a12}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .page{background-blend-mode:multiply;background-color:#0a1a12}}
+.it{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:.4rem;width:100%;min-width:0}
+.it svg,.it img{max-width:100%;height:auto;display:block}
+.cap{font-size:.8rem;background:rgba(255,255,255,.75);color:#000;padding:0 .3rem}
+.bevel{border:3px solid;border-color:var(--hi) var(--lo) var(--lo) var(--hi);background:var(--face);padding:.3rem}
+.px{image-rendering:pixelated;image-rendering:crisp-edges}
+a{color:var(--link)}
+.sway{animation:sway 3s ease-in-out infinite alternate}
+.bob{animation:bob 1.2s steps(2) infinite}
+@keyframes sway{from{transform:rotate(-4deg)}to{transform:rotate(4deg)}}
+@keyframes bob{50%{transform:translateY(-.4rem)}}
+.welcome{grid-column:1/-1;order:-1}
+.welcome svg{width:min(100%,34rem);filter:drop-shadow(4px 4px 0 rgba(0,0,0,.4))}
+.counter{font-family:"Courier New",monospace;background:#000;color:#0f0;padding:.2rem .5rem;letter-spacing:.2em;border:2px inset #888}
+.ticker{overflow:hidden;white-space:nowrap;background:#000;color:#ff0;width:100%;border:2px inset #888}
+.ticker span{display:inline-block;padding-left:100%;animation:tick 90s linear infinite}
+@keyframes tick{to{transform:translateX(-100%)}}
+.links{list-style:none;margin:0;padding:.4rem .8rem;background:rgba(255,255,255,.85);color:#000;border:2px ridge #888;text-align:left}
+.links a{display:block}
+.status{display:flex;gap:.3rem;padding:.2rem .3rem 0;font-size:.85rem}
+.status div{flex:1;border:1px solid;border-color:var(--lo) var(--hi) var(--hi) var(--lo);padding:0 .4rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.status div+div{flex:0 0 auto}
+@media (min-width:620px){.page{grid-template-columns:repeat(3,minmax(0,1fr));grid-template-areas:"w w w" "photo badge floppy" "inv robot crt" "hand cat phone" "best counter links"}
+.welcome{grid-area:w}.a-photo{grid-area:photo}.a-badge{grid-area:badge}.a-floppy{grid-area:floppy}.a-inv{grid-area:inv}.a-robot{grid-area:robot}.a-crt{grid-area:crt}.a-hand{grid-area:hand}.a-cat{grid-area:cat}.a-phone{grid-area:phone}.a-best{grid-area:best}.a-counter{grid-area:counter}.a-links{grid-area:links}}
+@media (min-width:1000px){.page{grid-template-columns:repeat(5,minmax(0,1fr));grid-template-areas:"photo badge floppy inv robot" "hand w w w crt" "cat phone best counter links"}}
+@media (max-width:380px){.page{grid-template-columns:minmax(0,1fr);padding:.7rem}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="win">
+  
+  
+  <button id="theme" type="button" class="themebtn">🌓 Dark mode</button>
+  
+  <div class="view">
+    <div class="zig"></div>
+    <main class="page">
+      <section class="it welcome">
+        <svg viewBox="0 0 400 100" role="img" aria-label="ddev.se">
+          <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#b6ff5a"/><stop offset=".5" stop-color="#18d838"/><stop offset="1" stop-color="#067a1a"/></linearGradient></defs>
+          <g transform="rotate(-3 200 50) skewX(-4)"><text x="14" y="76" textLength="372" lengthAdjust="spacingAndGlyphs" font-family="Impact,Haettenschweiler,'Arial Black',sans-serif" font-size="78" fill="url(#g)" stroke="#033d0c" stroke-width="3" paint-order="stroke">ddev.se</text></g>
+        </svg>
+        <div class="ticker"><span>★ “Working code isn’t enough.” ★ “Modules should be deep.” ★ “Design it twice.” ★ “Define errors out of existence.” ★ “Comments are always failures.” ★ “Nature isn’t classical, dammit.” ★ “God does not play dice with the universe.” ★ “Spooky action at a distance.” ★</span></div>
+      </section>
+
+      <figure class="it a-photo" style="margin:0"><div class="bevel"><img id="sunset" class="px" alt="Dithered pixel-art sunset" width="160" height="120"></div><span class="cap">“Design it twice.”</span></figure>
+
+      <div class="it a-badge">
+        <svg viewBox="0 0 88 31" width="190" role="img" aria-label="Campaign against decoherence"><rect width="88" height="31" fill="#d4d0c8" stroke="#000"/><rect x="2" y="2" width="84" height="27" fill="#fff" stroke="#808080"/><text x="5" y="12" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#c00">CAMPAIGN AGAINST</text><text x="5" y="24" font-family="Arial,sans-serif" font-size="8" font-weight="bold" fill="#000">DECOHERENCE!</text><rect x="68" y="6" width="14" height="18" rx="2" fill="#222"/><rect x="70" y="9" width="10" height="11" fill="#6cf"/></svg>
+        <span class="cap">“Complexity is incremental.”</span>
+      </div>
+
+      <div class="it a-floppy sway">
+        <svg viewBox="0 0 100 100" width="130" role="img" aria-label="Floppy disk"><path d="M6 6h78l10 10v78H6z" fill="#2a4bd8" stroke="#10206a" stroke-width="3"/><rect x="24" y="6" width="50" height="30" fill="#c9ccd4" stroke="#555"/><rect x="58" y="10" width="10" height="21" fill="#333"/><rect x="16" y="50" width="68" height="44" fill="#f4f1e6" stroke="#aaa"/><path d="M22 62h56M22 72h56M22 82h40" stroke="#6a8ed8" stroke-width="2"/><text x="22" y="59" font-family="'Comic Sans MS',cursive" font-size="9" fill="#c00">QUBITS</text></svg>
+        <span class="cap">“Modules should be deep.”</span>
+      </div>
+
+      <div class="it a-inv bob"><img id="inv" class="px" alt="Pixel space invader" width="132"><span class="cap">“Define errors out of existence.”</span></div>
+
+      <div class="it a-robot">
+        <svg viewBox="0 0 120 120" width="150" role="img" aria-label="Friendly robot"><line x1="60" y1="8" x2="60" y2="24" stroke="#444" stroke-width="3"/><circle cx="60" cy="8" r="6" fill="#f33"/><rect x="22" y="24" width="76" height="60" rx="14" fill="#b9c6d6" stroke="#2b3a52" stroke-width="3"/><circle cx="44" cy="50" r="10" fill="#fff" stroke="#2b3a52" stroke-width="2"/><circle cx="76" cy="50" r="10" fill="#fff" stroke="#2b3a52" stroke-width="2"/><circle cx="46" cy="51" r="4" fill="#06c"/><circle cx="78" cy="51" r="4" fill="#06c"/><path d="M42 70q18 12 36 0" fill="none" stroke="#2b3a52" stroke-width="4" stroke-linecap="round"/><rect x="34" y="86" width="52" height="26" rx="6" fill="#8aa0ba" stroke="#2b3a52" stroke-width="3"/><circle cx="60" cy="99" r="5" fill="#7f7"/></svg>
+        <span class="cap">“Nobody understands quantum mechanics.”</span>
+      </div>
+
+      <div class="it a-crt">
+        <svg viewBox="0 0 140 130" width="190" role="img" aria-label="CRT computer"><path d="M18 8h84l12 8v78l-12 8H18z" fill="#cfcfcf" stroke="#444" stroke-width="3"/><rect x="26" y="16" width="70" height="62" rx="6" fill="#111"/><defs><linearGradient id="sc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffb347"/><stop offset="1" stop-color="#ff5e62"/></linearGradient></defs><rect x="30" y="20" width="62" height="54" rx="5" fill="url(#sc)"/><path d="M34 24l24 0-24 16z" fill="rgba(255,255,255,.35)"/><circle cx="104" cy="90" r="3" fill="#2d2"/><rect x="40" y="102" width="36" height="8" fill="#aaa" stroke="#444"/><path d="M20 118l20-12h84l-14 18H20z" fill="#e6e6e6" stroke="#444" stroke-width="2"/><path d="M42 114h70M36 119h66" stroke="#888" stroke-dasharray="4 3"/></svg>
+        <span class="cap">“Comments are always failures.”</span>
+      </div>
+
+      <div class="it a-hand">
+        <svg class="bob" viewBox="0 0 150 60" width="150" role="img" aria-label="Pointing hand"><path d="M4 22h88l10-3h38c8 0 10 8 2 10l-30 4H80l-14 4H4z" fill="#f2b98d" stroke="#6b3b1b" stroke-width="2.5" stroke-linejoin="round"/><path d="M92 19c10-4 22-6 40-5" fill="none" stroke="#6b3b1b" stroke-width="2"/><rect x="2" y="14" width="16" height="32" rx="3" fill="#2a4bd8" stroke="#10206a" stroke-width="2.5"/></svg>
+        <a href="#guestbook">“Spooky action at a distance.”</a>
+      </div>
+
+      <div class="it a-cat"><img id="cat" class="px" alt="Pixel cat" width="156"><span class="cap">“God does not play dice.”</span></div>
+
+      <div class="it a-phone">
+        <svg viewBox="0 0 90 150" width="105" role="img" aria-label="Smartphone with notifications"><rect x="6" y="4" width="78" height="142" rx="14" fill="#16171d" stroke="#555" stroke-width="3"/><rect x="13" y="16" width="64" height="116" rx="6" fill="#1d2a4f"/><defs><linearGradient id="ph" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7c3aed"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs><rect x="17" y="22" width="56" height="30" rx="5" fill="url(#ph)"/><rect x="17" y="58" width="56" height="12" rx="4" fill="#fff" opacity=".85"/><rect x="17" y="76" width="40" height="12" rx="4" fill="#fff" opacity=".6"/><rect x="17" y="94" width="48" height="12" rx="4" fill="#fff" opacity=".4"/><rect x="34" y="8" width="22" height="4" rx="2" fill="#000"/><circle cx="72" cy="14" r="11" fill="#e11d48"/><text x="72" y="19" text-anchor="middle" font-family="Arial,sans-serif" font-size="13" font-weight="bold" fill="#fff">3</text></svg>
+        <span class="cap">“Working code isn’t enough.”</span>
+      </div>
+
+      <div class="it a-best"><div class="bevel" style="max-width:12rem"><b>Rule two:</b><br>“They should be smaller than that.”</div><img id="heart" class="px" alt="Pixel heart" width="54"></div>
+
+      <div class="it a-counter">
+        <span>Visitor no.</span>
+        <div class="counter" id="count">004217</div>
+        <span class="cap">since 1998</span>
+      </div>
+
+      <nav class="it a-links"><ul class="links" aria-label="Webring"><li><b>~ More ~</b></li><li><a href="#">Deep modules</a></li><li><a href="#">Small functions</a></li><li><a href="#">Qubits</a></li><li><a href="#">Entanglement</a></li></ul></nav>
+    </main>
+  </div>
+  
+</div>
+
+<script>
+(function(){
+  function sprite(rows,pal,scale){
+    var w=rows[0].length,h=rows.length,c=document.createElement('canvas');c.width=w;c.height=h;
+    var x=c.getContext('2d');
+    for(var j=0;j<h;j++)for(var i=0;i<w;i++){var k=rows[j][i];if(pal[k]){x.fillStyle=pal[k];x.fillRect(i,j,1,1)}}
+    return c.toDataURL('image/png');
+  }
+  function set(id,u){var e=document.getElementById(id);if(e)e.src=u}
+  set('inv',sprite(["..#.....#..","...#...#...","..#######..",".##.###.##.","###########","#.#######.#","#.#.....#.#","...##.##..."],{'#':'#33ff66'}));
+  set('heart',sprite([".##...##.","####.####","#########","#########",".#######.","..#####..","...###...","....#...."],{'#':'#e11d48'}));
+  set('cat',sprite(["##........##","###......###","############","##ee####ee##","############","#####pp#####","w##########w","############",".##########.","..########.."],{'#':'#ff9a3c',e:'#111',p:'#ff6fa5',w:'#fff'}));
+  // dithered sunset bitmap
+  var W=120,H=90,c=document.createElement('canvas');c.width=W;c.height=H;var x=c.getContext('2d'),d=x.createImageData(W,H);
+  var B=[0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5],P=[[26,18,64],[122,36,110],[240,90,80],[255,190,90],[255,236,150]];
+  for(var j=0;j<H;j++)for(var i=0;i<W;i++){
+    var t=j/(H*.75),v=Math.min(1,t)*(P.length-1)+(B[(j%4)*4+(i%4)]/16-.5),a=Math.max(0,Math.min(P.length-1,Math.round(v))),col=P[a];
+    var dx=i-W*.62,dy=j-H*.5; if(dx*dx+dy*dy<190)col=[255,248,200];
+    var m1=H*.72+Math.sin(i/9)*6+Math.sin(i/3.3)*2,m2=H*.82+Math.sin(i/6+2)*5;
+    if(j>m2)col=[14,10,38];else if(j>m1)col=((i+j)%2?[44,24,76]:[52,30,84]);
+    var o=(j*W+i)*4;d.data[o]=col[0];d.data[o+1]=col[1];d.data[o+2]=col[2];d.data[o+3]=255;
+  }
+  x.putImageData(d,0,0);set('sunset',c.toDataURL('image/png'));
+  var s=document.getElementById('sunset');if(s){s.style.width='min(100%,14rem)';s.style.height='auto'}
+  // counter
+  try{var n=+(localStorage.getItem('pp_n')||4216)+1;localStorage.setItem('pp_n',n);document.getElementById('count').textContent=('000000'+n).slice(-6)}catch(e){}
+  // theme
+  var r=document.documentElement,b=document.getElementById('theme');
+  b.addEventListener('click',function(){var dark=getComputedStyle(r).getPropertyValue('--desk').trim()==='#10222a';r.setAttribute('data-theme',dark?'light':'dark')});
+})();
+</script>
+</body>
+</html>
